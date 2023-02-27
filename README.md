@@ -20,6 +20,8 @@
 ### To build project
 
 ``` 
+  git clone https://github.com/agalup/cudaMallocRuntime.git
+  cd cudaMallocRuntime
   mkdir build
   cd build
   cmake .. && make
