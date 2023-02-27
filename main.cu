@@ -3,7 +3,7 @@
 #include "cuda_device_runtime_api.h"
 #include <cassert>
 
-#define GUARD_CU(a) if (a != 0) printf("[%s:%d] err %s\n", __FILE__, __LINE__, cudaGetErrorString(a));
+#define GUARD_CU(a) if (a != 0) printf("[%s:%d] err(%d) %s\n", __FILE__, __LINE__, a, cudaGetErrorString(a));
 
 __global__
 void cudaMallocRuntimeTest(size_t size){
@@ -20,6 +20,9 @@ void cudaMallocRuntimeTest(size_t size){
 
 int main(int argn, char* arg[]){
     GUARD_CU(cudaDeviceReset());
+
+    int* dev_tmp;
+//    GUARD_CU(cudaMalloc((void**)&dev_tmp, sizeof(int)));
 
     //https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html?highlight=cudalimitmallocheapsize#heap-memory-allocation
     size_t size_to_alloc = 1024*7;
