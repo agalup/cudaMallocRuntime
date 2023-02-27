@@ -1,5 +1,15 @@
 # cudaMallocRuntime
 
+### To build project
+
+``` 
+  git clone https://github.com/agalup/cudaMallocRuntime.git
+  cd cudaMallocRuntime
+  mkdir build
+  cd build
+  cmake .. && make
+  ```
+
 ### To launch Multi-Process Service:
 
 1. Set up the MPS environment variables:
@@ -16,13 +26,22 @@
   nvidia-cuda-mps-control -d
   ```
   
- 
-### To build project
+### To run project
 
-``` 
-  git clone https://github.com/agalup/cudaMallocRuntime.git
-  cd cudaMallocRuntime
-  mkdir build
-  cd build
-  cmake .. && make
+```
+  ./dev_cudaMalloc_test
   ```
+ 
+Error to observe: 
+
+```
+  err(811) unrecognized error code
+  ```
+
+### To quit MPS:
+
+```
+  echo quit | nvidia-cuda-mps-control
+  ```
+  
+  
