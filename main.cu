@@ -56,17 +56,17 @@ int main(int argn, char* arg[]){
     GUARD_CU((cudaError_t)cuCtxSynchronize());
     GUARD_CU((cudaError_t)cuCtxPopCurrent(&mm_ctx));
     
-    GUARD_CU((cudaError_t)cuCtxPushCurrent(mm_ctx));
+    GUARD_CU((cudaError_t)cuCtxPushCurrent(app_ctx));
     cudaWriteRuntimeTest<<<1, size>>>(tab);
     GUARD_CU(cudaPeekAtLastError());
     GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&mm_ctx));
+    GUARD_CU((cudaError_t)cuCtxPopCurrent(&app_ctx));
     
-    GUARD_CU((cudaError_t)cuCtxPushCurrent(mm_ctx));
+    GUARD_CU((cudaError_t)cuCtxPushCurrent(app_ctx));
     cudaReadRuntimeTest<<<1, size>>>(tab);
     GUARD_CU(cudaPeekAtLastError());
     GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&mm_ctx));
+    GUARD_CU((cudaError_t)cuCtxPopCurrent(&app_ctx));
     
     GUARD_CU((cudaError_t)cuCtxPushCurrent(mm_ctx));
     cudaFreeRuntimeTest<<<1, size>>>(tab);
