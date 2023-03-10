@@ -33,49 +33,25 @@ int main(int argn, char* arg[]){
     GUARD_CU(cudaPeekAtLastError());
 
     int size = 1;
-    int device = 0;
-
-    auto affinity_flags = CUctx_flags::CU_CTX_SCHED_AUTO;
-
-    CUcontext mm_ctx, app_ctx;
-    GUARD_CU((cudaError_t)cuCtxCreate(&mm_ctx, affinity_flags, device));
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&mm_ctx));
-
-    GUARD_CU((cudaError_t)cuCtxCreate(&app_ctx, affinity_flags, device));
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&app_ctx));
 
     int** tab = NULL; GUARD_CU(cudaMalloc((void**)&tab, sizeof(int*)*size));
     
-    GUARD_CU((cudaError_t)cuCtxPushCurrent(mm_ctx));
     cudaMallocRuntimeTest<<<1, size>>>(tab);
     GUARD_CU(cudaPeekAtLastError());
     GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&mm_ctx));
-    GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU(cudaPeekAtLastError());
     
-    GUARD_CU((cudaError_t)cuCtxPushCurrent(app_ctx));
     cudaWriteRuntimeTest<<<1, size>>>(tab);
     GUARD_CU(cudaPeekAtLastError());
     GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&app_ctx));
     
-    GUARD_CU((cudaError_t)cuCtxPushCurrent(app_ctx));
     cudaReadRuntimeTest<<<1, size>>>(tab);
     GUARD_CU(cudaPeekAtLastError());
     GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&app_ctx));
     
-    GUARD_CU((cudaError_t)cuCtxPushCurrent(mm_ctx));
     cudaFreeRuntimeTest<<<1, size>>>(tab);
     GUARD_CU(cudaPeekAtLastError());
     GUARD_CU((cudaError_t)cuCtxSynchronize());
-    GUARD_CU((cudaError_t)cuCtxPopCurrent(&mm_ctx));
-
-    GUARD_CU((cudaError_t)cuCtxDestroy(mm_ctx));
-    GUARD_CU((cudaError_t)cuCtxDestroy(app_ctx));
 
     GUARD_CU(cudaFree(tab));
-
     return 0;
 }
