@@ -13,5 +13,6 @@ set(CMAKE_CXX_FLAGS "-O3 -Wall -m64 -fPIC")
 set(CMAKE_CUDA_FLAGS "-arch=sm_80 -O3 -rdc=true -lcudadevrt -lcuda")
 
 add_executable(dev_cudaMalloc_test main.cu)
+target_link_libraries(dev_cudaMalloc_test cuda)
 set_property(TARGET dev_cudaMalloc_test PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 
